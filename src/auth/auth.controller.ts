@@ -28,14 +28,9 @@ export class AuthController {
       })
     }
   }
-  // @Post('/login')
-  // async login(@Body() loginDto:LoginDto){
-  //   return this.authService.login(loginDto);
-  // }
   @Post('/login')
   async login(@Body() loginDto:LoginDto,@Res() res:express.Response){
     try{
-      // const result = await this.authService.login(loginDto);
       return res.status(HttpStatus.OK).json({
         result:await this.authService.login(loginDto),
         message:'Login created successfully'
