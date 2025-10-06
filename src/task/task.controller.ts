@@ -1,11 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskService } from './task.service';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { roles } from 'src/auth/decorators/roles.decorator';
+import { UserRole } from 'src/auth/entities/user.entity';
 
 @Controller('task')
 export class TaskController {
   constructor(private readonly taskservice:TaskService){}
+  @roles(UserRole.ADMIN)
+  @UseGuards(JwtAuthGuard,RolesGuard)
   @Post('/add-task')
   async create(@Body() createTaskDto:CreateTaskDto){
     return this.taskservice.create(createTaskDto);
