@@ -28,9 +28,25 @@ export class AuthController {
       })
     }
   }
+  // @Post('/login')
+  // async login(@Body() loginDto:LoginDto){
+  //   return this.authService.login(loginDto);
+  // }
   @Post('/login')
-  async login(@Body() loginDto:LoginDto){
-    return this.authService.login(loginDto);
+  async login(@Body() loginDto:LoginDto,@Res() res:express.Response){
+    try{
+      // const result = await this.authService.login(loginDto);
+      return res.status(HttpStatus.OK).json({
+        result:await this.authService.login(loginDto),
+        message:'Login created successfully'
+      })
+    }
+    catch(error){
+      res.status(HttpStatus.UNAUTHORIZED).json({
+        success:false,
+        message:'Email and Password not registered'
+      })
+    }
   }
   @UseGuards(JwtAuthGuard)
   @Get('/profile')
